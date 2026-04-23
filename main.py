@@ -17,25 +17,27 @@ def crear_oficinas(cant_ofis, lista_dia, lista_horarios): #Los dias van a ser de
     return oficinas
 
 
+
 def mostrar_oficinas(oficinas, lista_dia, lista_horarios):  #Mostrar las oficinas con 0 (libre) y 1 (ocupada)
 
     print("Oficina / Horario / Dias")
 
-    for ofi in range(len(oficinas)):
-        print(f"\nOficina {ofi + 1}")
+    for ofi in range(len(oficinas)):           # Recorre cada oficina disponible
+        print(f"\nOficina {ofi + 1}")          # Muestra el número de oficina (sumamos 1 para que comience desde 1 lo que vamos a mostrar)
     
-        print("        ", end="")
-        for d in lista_dia:
+        print("        ", end="")              # Espaciado inicial para alinear el encabezado de días con la tabla
+        for d in lista_dia:                    # Recorre la lista de días para mostrarlos como columnas de la tabla
             print(d, end="   ")
         print()
 
-        for h in range(len(lista_horarios)):
-            print(lista_horarios[h], end="     ")
+        for h in range(len(lista_horarios)):             # Recorre cada horario disponible (cada fila de la matriz)
+            print(lista_horarios[h], end="     ")        # Muestra el horario actual como etiqueta de fila
 
-            for d in range(len(lista_dia)):
+            for d in range(len(lista_dia)):               # Recorre cada día dentro del horario actual para esa oficina
                 print(oficinas[ofi][h][d], end="         ")
             
             print()
+
 
 
 
@@ -69,10 +71,46 @@ def reservar(oficinas, list_dia, lista_horarios):    #Si esta libre reserva, y s
 
 
 
-#def cancelar_oficina(oficinas):
 
 
-#def mostrar_libres(oficinas):
+def cancelar_oficina(oficinas, list_dia, lista_horarios):
+    selec_ofi = int(input("Que ofica quiere cancelar: "))
+    while selec_ofi < 0 or selec_ofi >= len(oficinas):
+        print("error, vuelva a intentarlo")
+        selec_ofi = int(input("Que ofica quiere cancelar: "))               
+                                                                            
+    selec_dia = input("Que dia quiere cancelar: ")                         #Me parecio que lo mejor era hacerlo como el de reservas, solo que en este caso lo haria al revez 
+    while selec_dia not in list_dia:                                       
+        print("error, vuelva a intentarlo")
+        selec_dia = input("Que dia quiere cancelar: ")
+
+    selec_hora = input("Que horario quiere cancelar: ")
+    while selec_hora not in lista_horarios:
+        print("error, vuelva a intentarlo")
+        selec_hora = input("Que horario quiere cancelar: ")
+    
+    dia_index = list_dia.index(selec_dia)
+    horario_index = lista_horarios.index(selec_hora)                  #Volvemos a buscar por los valores de posicion en las que estan
+
+    if oficinas[selec_ofi][horario_index][dia_index] == 1:            #Pero esta vez si esta en uno, que remplace el 1 por 0
+        oficinas[selec_ofi][horario_index][dia_index] = 0
+        print(f"Se cancelo el turno para la oficina {selec_ofi} a las {selec_hora} el dia {selec_dia}")
+    
+    else:                                                                                                           #Y en caso contrario, que avise que no hizo cambios
+        print(f"No hay turno reservado para la oficina {selec_ofi}, a las {selec_hora} para el dia {selec_dia}")
+
+
+
+
+
+def mostrar_libres(oficinas, lista_dia, lista_horario):
+
+    for ofi in range(len(oficinas)):
+        for dia in range(len(lista_dia)):
+            for hora in range(len(lista_horario)):
+                if oficinas[ofi][hora][dia] == 0:
+                    print("")
+
 
 
 
@@ -105,6 +143,9 @@ def menu(): #Programa principal
             reservar(oficinas, dia, horarios)                      #Si elige la opcion 2, va a poder reservar en alguna de las oficinas
 
         elif opcion == 3:
+            cancelar_oficina(oficinas, dia, horarios)
+
+        elif opcion == 4:
             print("Saliendo del programa, gracias por su reserva")   
             break
 
