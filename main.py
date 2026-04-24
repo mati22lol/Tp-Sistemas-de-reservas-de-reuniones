@@ -45,14 +45,14 @@ def mostrar_oficinas(oficinas, lista_dia, lista_horarios):  #Mostrar las oficina
 
 
 
-def reservar(oficinas, list_dia, lista_horarios):    #Si esta libre reserva, y si esta ocupada que avise
+def reservar(oficinas, lista_dia, lista_horarios):    #Si esta libre reserva, y si esta ocupada que avise
     selec_ofi = int(input("Que ofica quiere reservar: "))
     while selec_ofi < 0 or selec_ofi >= len(oficinas):
         print("error, vuelva a intentarlo")
         selec_ofi = int(input("Que ofica quiere reserva: "))
 
     selec_dia = input("Que dia quiere reservar: ")
-    while selec_dia not in list_dia:
+    while selec_dia not in lista_dia:
         print("error, vuelva a intentarlo")
         selec_dia = input("Que dia quiere reservar: ")
 
@@ -61,7 +61,7 @@ def reservar(oficinas, list_dia, lista_horarios):    #Si esta libre reserva, y s
         print("error, vuelva a intentarlo")
         selec_hora = input("Que horario quiere reservar: ")
 
-    dia_index = list_dia.index(selec_dia)                 #Aca creamos una variable para tener la posicion exacta de dia y hora que eligio el que reserva
+    dia_index = lista_dia.index(selec_dia)                 #Aca creamos una variable para tener la posicion exacta de dia y hora que eligio el que reserva
     horario_index = lista_horarios.index(selec_hora)
 
     if oficinas[selec_ofi][horario_index][dia_index] == 0:   #lo que pasa aca es que, si en la lista de oficinas, en la posicion del horario que se eligio, y la posicion del dia que se eligio
@@ -71,17 +71,17 @@ def reservar(oficinas, list_dia, lista_horarios):    #Si esta libre reserva, y s
     else:
         print(f"Ya hay una reserva para el {selec_dia} a las {selec_hora} en la oficina {selec_ofi}") 
     
-    return oficinas
+    return True, oficinas 
 
 
 
 
 
 def cancelar_oficina(oficinas, list_dia, lista_horarios):
-    selec_ofi = int(input("Que ofica quiere cancelar: "))
+    selec_ofi = int(input("Que oficina quiere cancelar: "))
     while selec_ofi < 0 or selec_ofi >= len(oficinas):
         print("error, vuelva a intentarlo")
-        selec_ofi = int(input("Que ofica quiere cancelar: "))               
+        selec_ofi = int(input("Que oficina quiere cancelar: "))               
                                                                             
     selec_dia = input("Que dia quiere cancelar: ")                         #Me parecio que lo mejor era hacerlo como el de reservas, solo que en este caso lo haria al revez 
     while selec_dia not in list_dia:                                       
@@ -143,6 +143,58 @@ def buscar_disponibilidad(oficinas, lista_dia, lista_horarios):
         else:
             print("Para este dia y horario ya esta todo reservado")
             
+
+
+
+def cambiar_turno(oficinas, lista_dia, lista_horarios):
+    turno_viejo_ofi = int(input("Que ofica habia reservado: "))
+    while turno_viejo_ofi < 0 or turno_viejo_ofi >= len(oficinas):
+        print("error, vuelva a intentarlo")
+        turno_viejo_ofi = int(input("Que oficina habia reservado: "))
+
+    turno_viejo_dia = input("Que dia habia reservado: ")
+    while turno_viejo_dia not in lista_dia:
+        print("error, vuelva a intentarlo")
+        turno_viejo_dia = input("Que dia habia reservado: ")
+
+    turno_viejo_hora = input("Que horario habia reservado: ")
+    while turno_viejo_hora not in lista_horarios:
+        print("error, vuelva a intentarlo")
+        turno_viejo_hora = input("Que horario habia reservado: ")
+
+    dia_index = lista_dia.index(turno_viejo_dia)
+    horario_index = lista_horarios.index(turno_viejo_hora)
+
+    if oficinas[turno_viejo_ofi][horario_index][dia_index] == 0:
+        print("Este turno no esta reservado")
+        return
+
+    ofi_nueva = int(input("A que oficina quiere cambiar: "))
+    while ofi_nueva < 0 or ofi_nueva >= len(oficinas):
+        print("Error")
+        ofi_nueva = int(input("A que oficina quiere cambiar: "))
+
+    dia_nuevo = input("A que dia quiere cambiar: ")
+    while dia_nuevo not in lista_dia:
+        print("Error")
+        dia_nuevo = input("A que dia quiere cambiar: ")
+
+    hora_nuevo = input("A que horario quiere cambiar: ")
+    while hora_nuevo not in lista_horarios:
+        print("Error")
+        hora_nuevo = input("A que horario quiere cambiar: ")
+
+    dia_nuevo_index = lista_dia.index(dia_nuevo)
+    hora_nuevo_index = lista_horarios.index(hora_nuevo)
+
+    if oficinas[ofi_nueva][hora_nuevo_index][dia_nuevo_index] == 1:
+        print("El nuevo turno ya está ocupado")
+        return
+
+    oficinas[turno_viejo_ofi][horario_index][dia_index] = 0
+    oficinas[ofi_nueva][hora_nuevo_index][dia_nuevo_index] = 1
+
+    print("Turno cambiado correctamente")
 
 
 
