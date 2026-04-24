@@ -1,3 +1,6 @@
+#LISTAS DE ALMACENAMIENTO PARA MATRICES
+
+"""Los datos siempre seran los mismos asi que se guardan en listas"""
 dia = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
 horarios = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]
 
@@ -5,6 +8,7 @@ horarios = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:0
 #FUNCIONES QUE NECESITA EL PROGRAMA
 
 def crear_oficinas(cant_ofis, lista_dia, lista_horarios): #Los dias van a ser de lunes a viernes (5 dias) y los horarios de 10am hasta 10pm (12 horarios)
+    """Crea la cantidad de oficinas que se disponen segun el numero que se ingrese para crear sus matrices de cada una"""
     oficinas = []
     for i in range(cant_ofis):
         matriz = []
@@ -106,11 +110,39 @@ def cancelar_oficina(oficinas, list_dia, lista_horarios):
 def mostrar_libres(oficinas, lista_dia, lista_horario):
 
     for ofi in range(len(oficinas)):
+        print(f"Oficina {ofi + 1}")
+        
         for dia in range(len(lista_dia)):
+            print(f"{lista_dia[dia]}:")
             for hora in range(len(lista_horario)):
                 if oficinas[ofi][hora][dia] == 0:
-                    print("")
+                    print(f"{lista_horario[hora]} ", end="")
+            print()
+        print()
 
+
+def buscar_disponibilidad(oficinas, lista_dia, lista_horarios):
+    selec_dia = input("Que dia quiere reservar: ")
+    while selec_dia not in lista_dia:
+        print("error, vuelva a intentarlo")
+        selec_dia = input("Que dia quiere reservar: ")
+
+    selec_hora = input("Que horario quiere reservar: ")
+    while selec_hora not in lista_horarios:
+        print("error, vuelva a intentarlo")
+        selec_hora = input("Que horario quiere reservar: ")
+
+    dia_index = lista_dia.index(selec_dia)                 #Aca creamos una variable para tener la posicion exacta de dia y hora que eligio el que reserva
+    horario_index = lista_horarios.index(selec_hora)
+
+    for ofi in range(len(oficinas)):
+        if oficinas[ofi][horario_index][dia_index] == 0: 
+            print(f"Hay disponibilidad para tu dia y horario en la oficina {ofi + 1}")
+            
+        
+        else:
+            print("Para este dia y horario ya esta todo reservado")
+            
 
 
 
@@ -125,16 +157,22 @@ def menu(): #Programa principal
     
     while True:
         print()
+        print("-" * 25)
         print("PROGRAMA DE RESERVAS DE OFICINAS")
-        print()
-        print("1. Mostrar los turnos de nuestras oficinas")
+        print("-" * 25)
+        print("1. Mostrar los turnos")
         print("2. Reservar alguna oficina")
-        print("3. Salir del programa")
+        print("3. Cancelar turno")
+        print("4. Mostrar turno libres")
+        print("5. Buscar disponibilidad")
+        print("6. Salir del programa")
 
         opcion = int(input("Ingrese la opcion: "))                 #Creamos otro bucle para hacer el menu y pueda elegir la opcion (funcion que quiere realizar)
         while opcion < 1 or opcion > 5:
-            print("Erro, vuelva a intentarlo")
+            print("Error, vuelva a intentarlo")
             opcion = int(input("Ingrese la opcion: "))
+
+        print("")
         
         if opcion == 1:
             mostrar_oficinas(oficinas, dia, horarios)              #Elige opcion 1, va a mostrar las oficinas y sus reservas, utiliza la funcion que creamos
@@ -146,7 +184,17 @@ def menu(): #Programa principal
             cancelar_oficina(oficinas, dia, horarios)
 
         elif opcion == 4:
+            mostrar_libres(oficinas, dia, horarios)
+
+        elif opcion ==5:
+            buscar_disponibilidad(oficinas, dia, horarios)
+
+        elif opcion == 6:
             print("Saliendo del programa, gracias por su reserva")   
             break
+        
+        print("")
+        input(" Presiones enter para entrar al menu")
+        print("/n /n")
 
 menu()
