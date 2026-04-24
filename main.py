@@ -217,7 +217,8 @@ def menu(): #Programa principal
         print("3. Cancelar turno")
         print("4. Mostrar turno libres")
         print("5. Buscar disponibilidad")
-        print("6. Salir del programa")
+        print("6. Cambiar turno")
+        print("7. Salir del programa")
 
         opcion = int(input("Ingrese la opcion: "))                 #Creamos otro bucle para hacer el menu y pueda elegir la opcion (funcion que quiere realizar)
         while opcion < 1 or opcion > 5:
@@ -238,10 +239,13 @@ def menu(): #Programa principal
         elif opcion == 4:
             mostrar_libres(oficinas, dia, horarios)
 
-        elif opcion ==5:
+        elif opcion == 5:
             buscar_disponibilidad(oficinas, dia, horarios)
 
         elif opcion == 6:
+            cambiar_turno(oficinas, dia, horarios)
+
+        elif opcion == 7:
             print("Saliendo del programa, gracias por su reserva")   
             break
         
