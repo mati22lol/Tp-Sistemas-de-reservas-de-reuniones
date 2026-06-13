@@ -1,10 +1,8 @@
 import json
 import random
 
-
 DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
 HORARIOS = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]
-
 
 def mostrar_guia():
     """Muestra las instrucciones iniciales al usuario"""
@@ -15,7 +13,6 @@ def mostrar_guia():
     print("2. Los días disponibles son de Lunes a Viernes.")
     print("3. El rango horario es de 10:00 a 22:00 (bloques de 1 hora).")
     print("-" * 60)
-
 
 def pedir_entero(mensaje, minimo, maximo):
     valido = False
@@ -34,7 +31,6 @@ def pedir_entero(mensaje, minimo, maximo):
             print("Error. Debe ingresar un número entero.")
 
     return numero    
-
 
 def crear_oficinas(cant_ofis):
     oficinas = {}
@@ -55,7 +51,6 @@ def crear_oficinas(cant_ofis):
                 }
 
     return oficinas
-
 
 def mostrar_oficinas(oficinas):
     print("\n" + " ESTADO ACTUAL DE LAS OFICINAS ".center(70, "█"))
@@ -79,12 +74,10 @@ def mostrar_oficinas(oficinas):
 
             print(fila_texto)
 
-
 def elegir_oficina(oficinas):
     cant_ofis = len(oficinas)
 
     print("\nOficinas disponibles:")
-
     for i in range(1, cant_ofis + 1):
         print(i, "- Oficina", i)
 
@@ -95,7 +88,6 @@ def elegir_oficina(oficinas):
 
 def elegir_dia():
     print("\nDías disponibles:")
-
     for i in range(len(DIAS)):
         print(i + 1, "-", DIAS[i])
 
@@ -106,7 +98,6 @@ def elegir_dia():
 
 def elegir_horario():
     print("\nHorarios disponibles:")
-
     for i in range(len(HORARIOS)):
         print(i + 1, "-", HORARIOS[i])
 
@@ -122,7 +113,6 @@ def obtener_datos_reserva(oficinas):
 
     return ofi_key, dia, hora
 
-
 def guardar_movimiento_csv(accion, oficina, dia, hora):
     try:
         archivo = open("movimientos.csv", "at")
@@ -136,7 +126,6 @@ def guardar_movimiento_csv(accion, oficina, dia, hora):
             archivo.close()
         except NameError:
             pass
-
 
 def crear_encabezado_csv():
     try:
@@ -170,7 +159,6 @@ def pedir_datos_clientes():
     telefono = input("Ingrese su telefono: ")
     while not telefono.isdigit() or len(telefono) != 8:
         telefono = input("Ingrese su telefono: ")
-
     return nombre, dni, telefono
 
 
@@ -187,10 +175,8 @@ def codigo_existe(oficinas, codigo):
                 
 def generar_codigo(oficinas):
     codigo = random.randint(100000, 999999)
-
     if codigo_existe(oficinas, codigo):
         return generar_codigo(oficinas)
-    
     return codigo
     
 
@@ -254,12 +240,10 @@ def gestionar_reserva(oficinas, ofi_key, dia, hora, tipo="reservar"):
         else:
             print(f"\n AVISO: No existía ninguna reserva en ese horario.")
 
-
 def guardar_oficinas(oficinas):
     try:
         archivo = open("reservas.json", "wt")
         json.dump(oficinas, archivo)
-
         print("Datos guardados.")
 
     except OSError as error:
@@ -270,7 +254,6 @@ def guardar_oficinas(oficinas):
             archivo.close()
         except NameError:
             pass
-
 
 def cargar_datos_oficinas():
     try:
@@ -295,7 +278,6 @@ def cargar_datos_oficinas():
         except NameError:
             pass
     
-
 def datos_busqueda(oficinas):
     ofi_key = elegir_oficina(oficinas)
     dia = elegir_dia()
@@ -312,7 +294,6 @@ def busqueda_disponibilidad(oficinas, ofi_key, dia, indice = 0):
     
     return busqueda_disponibilidad(oficinas, ofi_key, dia, indice + 1)
 
-
 def menu():
     mostrar_guia()
     crear_encabezado_csv()
@@ -321,7 +302,6 @@ def menu():
     if datos_guardados is not None:
         oficinas = datos_guardados
         print(f"Se cargaron las reservas existentes")
-
     else:
         cant = pedir_entero("Con cuantas oficinas desea trabajar  hoy? (Maximo 5): ", 1, 5)
         oficinas = crear_oficinas(cant)
